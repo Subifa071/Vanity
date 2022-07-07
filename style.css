@@ -599,6 +599,22 @@ footer .copyright {
   z-index: -9;
 }
 
+/* about us */
+#page-header.about-header {
+  background-image: url('img/about/banner.png');
+}
+#about-head {
+  display: flex;
+  align-items: center;
+}
+#about-head img {
+  width: 56%;
+  height: auto;
+}
+#about-head div {
+  padding-left: 40px;
+}
+
 @media (max-width: 799px) {
   .section-p1 {
     padding: 40px 40px;
@@ -759,5 +775,16 @@ footer .copyright {
   }
   #blog .blog-details {
     width: 100%;
+  }
+  /* about us */
+  #about-head {
+    flex-direction: column;
+  }
+  #about-head img {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  #about-head div {
+    padding-left: 0px;
   }
 }
