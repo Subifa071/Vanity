@@ -1,4 +1,5 @@
 # VANITY
+
 <h2>INTRODUCTION</h2>
 
 <h3>FEATURES</h3>
@@ -19,3 +20,9 @@ Subifa Maharjan: <a href="mailto: subifamhrzn@gmail.com">subifamhrzn@gmail.com <
 Coventry ID: 11781475<br> 
 Student ID: 210270<br>
 
+# Activate Virtual Environment
+
+```bash
+cd project-directory/
+source vanity_venv/bin/activate
+```
