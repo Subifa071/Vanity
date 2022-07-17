@@ -5,6 +5,28 @@
   box-sizing: border-box;
   font-family: 'Spartan', sans-serif;
 }
+/* Scrollbar */
+html {
+  --scrollbarBG: #cfd8dc;
+  --thumbBG: #98a0c0;
+}
+body::-webkit-scrollbar {
+  width: 8px;
+}
+body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+body::-webkit-scrollbar-track {
+  background: var(--scrollbarBG);
+}
+body::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBG);
+  border-radius: 32px;
+  border: 0px solid var(--scrollbarBG);
+}
+/* end scrollbar */
+
 h1 {
   font-size: 50px;
   line-height: 64px;
