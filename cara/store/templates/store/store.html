@@ -1,24 +1,140 @@
-{% extends 'store/main.html' %} {% load static %} {% block content %}
-<div class="row">
-  {% for product in products %}
-  <div class="col-lg-4">
-    <img class="thumbnail" src="{{product.image.url}}" alt="" />
-    <div class="box-element product">
-      <h6><strong>{{product.name}}</strong></h6>
-      <hr />
-      <button
-        data-product="{{product.id}}"
-        data-action="add"
-        class="btn btn-outline-secondary add-btn update-cart"
-      >
-        Add to Cart
-      </button>
-      <a class="btn btn-outline-success" href="#">View</a>
-      <h4 style="display: inline-block; float: right">
-        <strong>${{product.price|floatformat:2}}</strong>
-      </h4>
-    </div>
-  </div>
-  {% endfor %}
-</div>
-{% endblock content %}
+{% extends "base/index.html" %}
+{% block content %}
+{% load static %}
+    <section id="hero">
+      <h4>Discover the latest in beauty at Cara!</h4>
+      <h2>Super deals</h2>
+      <h1>On all products</h1>
+      <p>
+        Explore an unrivaled selection of makeup,<br />
+        skincare & more from classic & emerging brands.
+      </p>
+      <button>Shop now</button>
+    </section>
+    <section id="feature" class="section-p1">
+      <div class="fe-box">
+        <img src="{% static 'images/features/f1.png' %}" alt="" />
+        <h6>Free Shipping</h6>
+      </div>
+      <div class="fe-box">
+        <img src="{% static 'images/features/f2.png' %}" alt="" />
+        <h6>Online order</h6>
+      </div>
+      <div class="fe-box">
+        <img src="{% static 'images/features/f3.png' %}" alt="" />
+        <h6>Save Money</h6>
+      </div>
+      <!-- <div class="fe-box">
+        <img src="images/features/f4.png" alt="" />
+        <h6>Sales</h6>
+      </div> -->
+      <div class="fe-box">
+        <img src="{% static 'images/features/f5.png' %}" alt="" />
+        <h6>Happy Sell</h6>
+      </div>
+      <div class="fe-box">
+        <img src="{% static 'images/features/f6.png' %}" alt="" />
+        <h6>F24/7 Support</h6>
+      </div>
+    </section>
+
+    <section id="product1" class="section-p1">
+      <h2>Featured Products</h2>
+      <p>Popular Categories Collection</p>
+      <div class="pro-container">
+    {% for product in products %}
+        <a class="pro" href="{% url 'productdetail' product.id %}">
+          <img  alt="" src="{{product.imageURL}}"/>
+          <div class="des">
+            <span>Skincare</span>
+            <h5>{{ product.name }}</h5>
+            <div class="star">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half"></i>
+            </div>
+            <h4>$ {{ product.price }}</h4>
+          </div>
+          <button data-product="{{product.id}}" data-action="add"><i class="fas fa-shopping-cart cart update-cart"></i></button>
+        </a>
+    {% endfor %}
+      </div>
+    </section>
+
+    <section id="banner" class="section-m1">
+      <h4>Repair Services</h4>
+      <h2>Up to <span>70% off</span>All T-shirts & Accessories</h2>
+      <button class="normal">Explore More</button>
+    </section>
+
+    <section id="product1" class="section-p1">
+      <h2>New Arrivals</h2>
+      <p>Cosrx Now in Stock!</p>
+      <div class="pro-container">
+        {% for product in products %}
+        <div class="pro">
+          <img src="{{product.imageURL}}" alt="" />
+          <div class="des">
+            <span>Skincare</span>
+            <h5>{{ product.name }}</h5>
+            <div class="star">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half"></i>
+            </div>
+            <h4>$ {{ product.price }}</h4>
+          </div>
+          <button data-product="{{product.id}}" data-action="add"><i class="fas fa-shopping-cart cart update-cart"></i></button>
+        </div>
+        {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section id="sm-banner" class="section-p1">
+      <div class="banner-box">
+        <h2>Deals we love</h2>
+        <span>The perfect size palette is on sale at Cara!</span>
+        <button class="white">Learn More</button>
+      </div>
+      <div class="banner-box banner-box2">
+        <h2>Upcoming products</h2>
+        <span>Fenty Skin available soon at Cara</span>
+        <button class="white">Collection</button>
+      </div>
+    </section>
+
+    <section id="banner3">
+      <div class="banner-box">
+        <h3>SEASONAL SALE</h3>
+        <h2>Sephora Favorites Collection -50% OFF</h2>
+      </div>
+      <div class="banner-box banner-box2">
+        <h3>NEW SKINCARE COLLECTION</h3>
+        <h2>KRAVEBEAUTY</h2>
+      </div>
+      <div class="banner-box banner-box3">
+        <h3>rhode</h3>
+        <h2>New minimalist skincare line</h2>
+      </div>
+    </section>
+
+    <section id="newsletter" class="section-p1 section-m1">
+      <div class="newstext">
+        <h4>Sign Up For Newsletter</h4>
+        <p>
+          Get E-mail updates about our latest shop and
+          <span>special offers.</span>
+        </p>
+      </div>
+      <div class="form">
+        <input type="text" placeholder="Your email address" />
+        <button class="normal">Sign Up</button>
+      </div>
+    </section>
+</html>
+{% endblock %}

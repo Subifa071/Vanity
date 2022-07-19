@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cara</title>
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <script type="text/javascript">
+      var user = '{{request.user}}'
+
+      function getToken(name) {
+        var cookieValue = null
+        if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';')
+          for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim()
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === name + '=') {
+              cookieValue = decodeURIComponent(
+                cookie.substring(name.length + 1)
+              )
+              break
+            }
+          }
+        }
+        return cookieValue
+      }
+      var csrftoken = getToken('csrftoken')
+
+      function getCookie(name) {
+        // Split cookie string and get all individual name=value pairs in an array
+        var cookieArr = document.cookie.split(';')
+
+        // Loop through the array elements
+        for (var i = 0; i < cookieArr.length; i++) {
+          var cookiePair = cookieArr[i].split('=')
+
+          /* Removing whitespace at the beginning of the cookie name
+		        and compare it with the given string */
+          if (name == cookiePair[0].trim()) {
+            // Decode the cookie value and return
+            return decodeURIComponent(cookiePair[1])
+          }
+        }
+
+        // Return null if not found
+        return null
+      }
+      var cart = JSON.parse(getCookie('cart'))
+
+      if (cart == undefined) {
+        cart = {}
+        console.log('Cart Created!', cart)
+        document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
+      }
+      console.log('Cart:', cart)
+    </script>
+  </head>
+  <body>
+    <section id="header">
+      <a href="#"><img src="{% static 'images/logo.png' %}" class="logo" alt="" /></a>
+      <div>
+        <ul id="navbar">
+          {% if request.user.is_superuser %}
+            <li><strong>
+            Hi, {{request.user.username}}
+         </strong> </li>
+            <li><a href="{% url 'add_product' %}">Add Product</a></li>
+            <li><a href="{% url 'product_list' %}">Product List</a></li>
+          {% else %}
+          <li><a href="{% url 'store' %}">Home</a></li>
+          <li><a href="{% url 'store' %}">Shop</a></li>
+          <li><a href="{% url 'blog' %}">Blog</a></li>
+          <li><a class="active" href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
+          <li><a href="{% url 'store' %}">Login</a></li>
+          <li id="lg-bag">
+            <a href="{% url 'cart' %}"
+              ><i class="fa fa-shopping-bag" aria-hidden="true"></i>
+              <sup class="text-danger h6"><bold>
+{{cartItems}}
+              </bold></sup>
+            </a>
+          </li>
+          {% endif %}
+          <a href="#" id="close"><i class="far fa-times"></i></a>
+        </ul>
+      </div>
+      <div id="mobile">
+        <a href="{% url 'store' %}"
+          ><i class="fa fa-shopping-bag" aria-hidden="true"></i>
+        </a>
+        <i id="bar" class="fas fa-outdent"></i>
+      </div>
+    </section>
+
+    {% block content %}
+
+    {% endblock %}
+    <footer class="section-p1">
+      <div class="col">
+        <img class="logo" src="{% static 'images/logo.png' %}" alt="" />
+        <h4>Contact</h4>
+        <p><strong> Address: </strong>Labim Mall, 111, Kathmandu</p>
+        <p><strong> Phone: </strong>+4412018 / +5353493</p>
+        <p><strong> Hours: </strong>11:00 - 19:00, Sun - Sat</p>
+        <div class="follow">
+          <h4>Follow us</h4>
+          <div class="icon">
+            <i class="fab fa-facebook-f"></i>
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-pinterest-p"></i>
+            <i class="fab fa-youtube"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <h4>About</h4>
+        <a href="#">About us</a>
+        <a href="#">Delivery Information</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Contact Us</a>
+      </div>
+
+      <div class="col">
+        <h4>My Account</h4>
+        <a href="#">Sign In</a>
+        <a href="#">View Cart</a>
+        <a href="#">My Wishlist</a>
+        <a href="#">Track My Order</a>
+        <a href="#">Help</a>
+      </div>
+
+      <div class="col install">
+        <!-- <h4>Install App</h4>
+        <p>From App Store or Google Play</p>
+        <div class="row">
+          <img src="img/pay/app.jpg" alt="" />
+          <img src="img/pay/play.jpg" alt="" />
+        </div> -->
+        <h4>Secured Payment Gateways</h4>
+        <img src="img/pay/pay.png" alt="" />
+      </div>
+
+      <div class="copyright">
+        <p>© 2022, Cara</p>
+      </div>
+    </footer>
+    <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+  </body>
+  </html>
