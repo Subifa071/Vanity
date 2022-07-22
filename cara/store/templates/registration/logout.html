@@ -1,7 +1,10 @@
-<!DOCTYPE html>
+{% extends "base/index.html" %}
+{% block content %}
+<div class="container mt-4">
 
-<p>You have successfully logged out</p>
+<h3>You have successfully logged out.</h3>
 
-<a href="{% url 'login' %}">Login again</a>
+<a href="{% url 'login' %}" class="h5 mt-4">Login again</a>
 
-<html
+</div>
+{% endblock %}

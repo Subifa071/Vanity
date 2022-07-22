@@ -5,7 +5,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Product
+from .models import Blog, Product
 
 
 # REF: https://www.crunchydata.com/blog/building-a-user-registration-form-with-djangos-built-in-authentication
@@ -21,3 +21,8 @@ class AddProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ["name", "price", "description", "digital", "image"]
+
+class AddBlogForm(forms.ModelForm):
+    class Meta:
+        model = Blog
+        fields = ['title', 'description', 'tag']

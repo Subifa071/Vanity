@@ -9,12 +9,13 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.template.defaultfilters import slugify
 from django.utils.decorators import method_decorator
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-from .forms import AddProductForm, RegisterForm
+from .forms import AddBlogForm, AddProductForm, RegisterForm
 from .models import *
 from .models import Customer
 from .utils import cartData, guestOrder
@@ -26,6 +27,13 @@ def about(request):
 def contact(request):
    return render(request, 'store/contact.html')
 
+
+class NormalBlogListView(ListView):
+	paginate_by = 10
+	model = Blog
+	filter = ['published_by']
+	
+	
 def blog(request):
    return render(request, 'store/blog.html')
    
@@ -198,3 +206,75 @@ class CustomerListView(LoginRequiredMixin, ListView):
 	login_url = "/login/"
 	model = Customer
 	paginate_by = 10
+
+
+######### BLOG SECTION #########
+class BlogListView(LoginRequiredMixin, ListView):
+	login_url = "/login/"
+	model= Blog
+	paginate_by = 10
+
+
+class BlogDetailView(LoginRequiredMixin, DetailView):
+	login_url = "/login/"
+	model= Blog
+	
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		return context
+
+class BlogDeleteView(LoginRequiredMixin, DeleteView):
+	login_url = "/login/"
+	model = Blog
+	success_url = "/all-blogs/"
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		return context
+
+
+def add_blog(request):
+	if request.user.is_superuser:
+		if request.method == "POST":
+			form = AddBlogForm(request.POST)
+			if form.is_valid():
+				newpost = form.save(commit=False)
+				newpost.user = request.user
+				newpost.slug = slugify(newpost.title)
+				newpost.save()
+				form.save_m2m()
+				print()
+				return redirect('/all-blogs/')
+		else:
+			form = AddBlogForm()
+		return render(request, "admin/add_blog.html",{
+			'form':form
+		})
+	return redirect('unauthorized')
+
+
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
+	login_url = "/login/"
+	model = Blog
+	fields = ["title", "tag", "description", ]
+	template_name_suffix: str = "_update_form"
+	success_url = '/all-blogs/'
+
+
+@login_required
+def admin_dashboard(request):
+	if request.user.is_superuser:
+		blog_count = Blog.objects.count()
+		customers_count = Customer.objects.count()
+		orders_count = Order.objects.count()
+		products_count = Product.objects.count()
+		context = {
+			"blog_count": blog_count,
+			"customers_count": customers_count,
+			"orders_count": orders_count,
+			"products_count": products_count
+		}
+		print(context)
+		return render(request, "admin/dashboard.html",context)
+	else:
+		return redirect('unauthorized')
