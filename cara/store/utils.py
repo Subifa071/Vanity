@@ -31,12 +31,12 @@ def cookieCart(request):
 				'id':product.id,
 				'product':{'id':product.id,'name':product.name, 'price':product.price, 
 				'imageURL':product.image.url}, 'quantity':cart[i]['quantity'],
-				'digital':product.digital,'get_total':total,
+				'get_total':total,
 				}
 				items.append(item)
 
-				if product.digital == False:
-					order['shipping'] = True
+				
+				order['shipping'] = True
 		except:
 			pass
 			
