@@ -244,6 +244,7 @@ class BlogDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 	login_url = "/login/"
 	model = Blog
 	success_url = "/all-blogs/"
+	success_message = "Deleted Blog Successfully"
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
@@ -275,6 +276,7 @@ class BlogUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 	fields = ["title", "tag", "description", ]
 	template_name_suffix: str = "_update_form"
 	success_url = '/all-blogs/'
+	success_message = "Updated Blog Successfully"
 
 
 @login_required(login_url='/login/')
