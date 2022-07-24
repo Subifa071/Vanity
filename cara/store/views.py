@@ -48,15 +48,12 @@ def register(request):
             password = form.cleaned_data.get('password1')
             email = form.cleaned_data.get('email')
             user = authenticate(username = username, password = password)
-            print(user)
             customer = Customer(user = user, name=username, email=email)
-            print(customer)
             customer.save()
             login(request, user)
             return redirect('store')
     else:
         form = RegisterForm()
-        print(form)
     return render(request, 'registration/register.html', {'form': form})
 
 def unauthorized(request):
@@ -111,15 +108,12 @@ def checkout(request):
 
 def updateItem(request):
 	data = json.loads(request.body)
-	print(data)
 	productId = data['productId']
 	action = data['action']
-	print('Action:', action)
-	print('Product:', productId)
+
 
 	customer = request.user.customer
 	product = Product.objects.get(id=productId)
-	print(product)
 	order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
 	orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
@@ -266,7 +260,6 @@ def add_blog(request):
 				newpost.slug = slugify(newpost.title)
 				newpost.save()
 				form.save_m2m()
-				print()
 				return redirect('/all-blogs/')
 		else:
 			form = AddBlogForm()
@@ -284,7 +277,7 @@ class BlogUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 	success_url = '/all-blogs/'
 
 
-@login_required
+@login_required(login_url='/login/')
 def admin_dashboard(request):
 	if request.user.is_superuser:
 		blog_count = Blog.objects.count()
@@ -297,7 +290,17 @@ def admin_dashboard(request):
 			"orders_count": orders_count,
 			"products_count": products_count
 		}
-		print(context)
 		return render(request, "admin/dashboard.html",context)
 	else:
 		return redirect('unauthorized')
+
+
+@login_required(login_url='/login/')
+def user_dashboard(request):
+	customer = Customer.objects.get(user=request.user)
+	orders_count = Order.objects.filter(customer=customer)
+	context = {
+		"orders": orders_count,
+		"customer": customer
+	}
+	return render(request, "store/dashboard.html",context)

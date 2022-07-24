@@ -14,6 +14,7 @@ urlpatterns = [
 
 
 	path('register/', views.register, name='register'),
+	path('dashboard/', views.user_dashboard, name='user_dashboard'),
 
 	path('add_product/', views.add_product, name='add_product'),
   path('shop/', views.CustomerProductListView.as_view(template_name="store/shop.html"), name='shop'),
