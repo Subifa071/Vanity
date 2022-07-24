@@ -19,6 +19,7 @@ Vanity is an e-commerce website especially for purchasing cosmetic products whil
 <ul>
 <li>cd {Folder}<br>
 <li>python3 (to check version and whether it is installed or not) [Python](https://www.python.org/)<br>
+<li>pip install -r requirements.txt <br>
 <li>pip install virtualenv <br> 
 <li>virtualenv {env} <br>
 <li>To activate environment: source {env}/bin/activate <br>
