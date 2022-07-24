@@ -16,13 +16,14 @@ class Customer(models.Model):
 
 
 class Product(models.Model):
+	SKINCARE="skincare"
 	PRODUCT_TAGS = (
-		("skincare", "Skin Care"),
+		(SKINCARE, "Skin Care"),
 		("makeup", "Makeup"),
 		("bath&body", "Bath & Body")
 	)
 	name = models.CharField(max_length=200)
-	tag= models.CharField(max_length=10, choices=PRODUCT_TAGS)
+	tag= models.CharField(max_length=100, choices=PRODUCT_TAGS,default=SKINCARE,null=True,blank=True)
 	price = models.FloatField()
 	description = models.TextField()
 	digital = models.BooleanField(default=False,null=True, blank=True)
