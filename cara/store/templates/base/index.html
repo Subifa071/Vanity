@@ -14,6 +14,7 @@
     />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
+
     <script type="text/javascript">
       var user = '{{request.user}}'
 
@@ -74,17 +75,16 @@
             <li><strong>
             Hi, {{request.user.username}}
          </strong> </li>
-            <li><a href="{% url 'add_product' %}">Dashboard</a></li>
+            <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
             <!-- <li><a href="{% url 'add_product' %}">Add Product</a></li>
             <li><a href="{% url 'product_list' %}">Product List</a></li> -->
           <li><a href="{% url 'logout' %}">Logout</a></li>
           {% else %}
           <li><a href="{% url 'store' %}">Home</a></li>
-          <li><a href="{% url 'store' %}">Shop</a></li>
+          <li><a href="{% url 'shop' %}">Shop</a></li>
           <li><a href="{% url 'blog' %}">Blog</a></li>
           <li><a class="active" href="{% url 'about' %}">About</a></li>
           <li><a href="{% url 'contact' %}">Contact</a></li>
-          <li><a href="{% url 'login' %}">Login</a></li>
           {% if request.user.is_authenticated %}
           <li id="lg-bag">
             <a href="{% url 'cart' %}"
@@ -95,6 +95,8 @@
             </a>
           </li>
           <li><a href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+          <li><a href="{% url 'login' %}">Login</a></li>
           {% endif %}
           {% endif %}
           <a href="#" id="close"><i class="far fa-times"></i></a>
@@ -164,5 +166,33 @@
       </div>
     </footer>
     <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+    <script>
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      {% for msg in messages %}
+      Toast.fire({
+        icon: '{{msg.tags}}',
+        title: '<p>{{ msg }}</p>'
+      })
+      {% endfor %}
+    </script>
   </body>
   </html>

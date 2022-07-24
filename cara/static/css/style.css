@@ -237,7 +237,8 @@ body {
   box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.02);
   margin: 15px 0;
   transition: 0.2s ease;
-  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 #product1 .pro:hover {
   box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.06);
@@ -245,11 +246,23 @@ body {
 #product1 .pro img {
   width: 100%;
   border-radius: 20px;
+  flex: 1;
+  object-fit: contain;
 }
 #product1 .pro .des {
   text-align: start;
   padding: 10px 0;
+  margin-top: 10px;
+  display: flex;
+align-items: flex-end;
 }
+#product1 .pro .des .product_container {
+flex: 1;
+}
+#product1 .pro .des i {
+  height: 20px;
+  width: 20px;
+  }
 #product1 .pro span {
   color: #606063;
   font-size: 12px;
@@ -276,11 +289,8 @@ body {
   border-radius: 50px;
   background-color: #e8f6ea;
   font-weight: 500;
-  color: #088178;
+  color: #088178 !important;
   border: 1px solid #cce7d0;
-  position: absolute;
-  bottom: 20px;
-  right: 10px;
 }
 #banner {
   display: flex;
@@ -1017,4 +1027,10 @@ footer .copyright {
     width: 100%;
     padding: 20px;
   }
+}
+
+
+/* SWAL 2 */
+#swal2-title p {
+  font-size: 14px !important;
 }

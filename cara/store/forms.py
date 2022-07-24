@@ -20,7 +20,7 @@ class RegisterForm(UserCreationForm):
 class AddProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ["name", "price", "description", "digital", "image"]
+        fields = ["name", "price", "description", "digital", "image", 'tag']
 
 class AddBlogForm(forms.ModelForm):
     class Meta:

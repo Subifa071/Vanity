@@ -42,11 +42,12 @@
       <h2>Featured Products</h2>
       <p>Popular Categories Collection</p>
       <div class="pro-container">
-    {% for product in products %}
-        <a class="pro" href="{% url 'productdetail' product.id %}">
-          <img  alt="" src="{{product.imageURL}}"/>
+      {% for product in products %}
+        <a class="pro" href="{% url 'productdetail' product.id %}" style="text-decoration: none;">
+          <img src="{{product.imageURL}}"/>
           <div class="des">
-            <span>Skincare</span>
+            <div class="product_container">
+            <span>{{ product.get_tag_display }}</span>
             <h5>{{ product.name }}</h5>
             <div class="star">
               <i class="fas fa-star"></i>
@@ -56,10 +57,13 @@
               <i class="fas fa-star-half"></i>
             </div>
             <h4>$ {{ product.price }}</h4>
+            </div>
+            <div class="button_container">
+              <button data-product="{{product.id}}" data-action="add" class="cart update-cart"><i class="fas fa-shopping-cart "></i></button>
+            </div>
           </div>
-          <button data-product="{{product.id}}" data-action="add"><i class="fas fa-shopping-cart cart update-cart"></i></button>
         </a>
-    {% endfor %}
+      {% endfor %}
       </div>
     </section>
 
@@ -74,25 +78,28 @@
       <p>Cosrx Now in Stock!</p>
       <div class="pro-container">
         {% for product in products %}
-        <div class="pro">
-          <img src="{{product.imageURL}}" alt="" />
-          <div class="des">
-            <span>Skincare</span>
-            <h5>{{ product.name }}</h5>
-            <div class="star">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star-half"></i>
+          <a class="pro" href="{% url 'productdetail' product.id %}" style="text-decoration: none;">
+            <img src="{{product.imageURL}}"/>
+            <div class="des">
+              <div class="product_container">
+              <span>{{ product.get_tag_display }}</span>
+              <h5>{{ product.name }}</h5>
+              <div class="star">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half"></i>
+              </div>
+              <h4>$ {{ product.price }}</h4>
+              </div>
+              <div class="button_container">
+                <button data-product="{{product.id}}" data-action="add" class="cart update-cart"><i class="fas fa-shopping-cart "></i></button>
+              </div>
             </div>
-            <h4>$ {{ product.price }}</h4>
-          </div>
-          <button data-product="{{product.id}}" data-action="add"><i class="fas fa-shopping-cart cart update-cart"></i></button>
-        </div>
+          </a>
         {% endfor %}
         </div>
-      </div>
     </section>
 
     <section id="sm-banner" class="section-p1">

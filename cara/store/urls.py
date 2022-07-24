@@ -16,6 +16,7 @@ urlpatterns = [
 	path('register/', views.register, name='register'),
 
 	path('add_product/', views.add_product, name='add_product'),
+  path('shop/', views.CustomerProductListView.as_view(template_name="store/shop.html"), name='shop'),
   path('products/<int:pk>/', views.productdetail, name='productdetail'),
 
 
@@ -27,6 +28,7 @@ urlpatterns = [
 	path('products/<pk>/update', views.ProductUpdateView.as_view(template_name="admin/product_update_form.html"), name="product_update_form"),
 	path('products/<pk>/delete', views.ProductDeleteView.as_view(template_name="admin/product_delete_form.html"), name="product_delete_form"),
 	path('view_customers/', views.CustomerListView.as_view(template_name="admin/customers_list.html"), name="customers_list"),
+	path('view_orders/', views.OrderListView.as_view(template_name="admin/orders_list.html"), name="orders_list"),
 
   # ADMIN BLOG ROUTES
   path('all-blogs/', views.BlogListView.as_view(template_name="admin/blog_list.html"), name="blog_list"),

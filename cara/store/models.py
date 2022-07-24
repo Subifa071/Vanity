@@ -16,7 +16,13 @@ class Customer(models.Model):
 
 
 class Product(models.Model):
+	PRODUCT_TAGS = (
+		("skincare", "Skin Care"),
+		("makeup", "Makeup"),
+		("bath&body", "Bath & Body")
+	)
 	name = models.CharField(max_length=200)
+	tag= models.CharField(max_length=10, choices=PRODUCT_TAGS)
 	price = models.FloatField()
 	description = models.TextField()
 	digital = models.BooleanField(default=False,null=True, blank=True)
@@ -54,6 +60,7 @@ class Order(models.Model):
 	@property
 	def get_cart_total(self):
 		orderitems = self.orderitem_set.all()
+		print("ORDER ITEMS",orderitems)
 		total = sum([item.get_total for item in orderitems])
 		return total 
 
@@ -71,7 +78,8 @@ class OrderItem(models.Model):
 
 	@property
 	def get_total(self):
-		total = self.product.price * self.quantity
+		product = self.product
+		total = product.price * self.quantity
 		return total
 
 class ShippingAddress(models.Model):

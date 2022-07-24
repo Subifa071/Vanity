@@ -1,15 +1,16 @@
 {% extends "base/index.html" %}
 {% block content %}
 <div class="container">
-<h3 class="mt-4">Users</h3>
+<h3 class="mt-4">Orders</h3>
 
-{% for customer in object_list %}
+{% for order in object_list %}
 <div class="col">
   <div class=" card my-4 p-4">
     <div class="">
-      <h4>Email: {{customer.email}}</h4> 
-      <h4>User Id: {{customer.id}}</h4> 
-      <h4>Name: {{customer.name}}</h4>
+      <h4>Customer Name: {{order.customer.name}}</h4> 
+      <h4>Ordered Date: {{order.date_ordered}}</h4> 
+      <h4>Completed: {{order.complete}}</h4>
+      <h4>Transaction: {{order.transaction_id}}</h4>
     </div>
   </div>
 </div>

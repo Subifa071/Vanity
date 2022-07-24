@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.template.defaultfilters import slugify
@@ -72,21 +74,18 @@ def store(request):
 	return render(request, 'store/store.html', context)
 
 def productdetail(request,pk):
-   product = Product.objects.get(id = pk)
+	product = Product.objects.get(id = pk)
+	# Ref: https://stackoverflow.com/questions/22816704/django-get-a-random-object
+	pks = Product.objects.values_list('pk', flat=True)
+	random_pks = [choice(pks), choice(pks), choice(pks), choice(pks)]
+	random_products = Product.objects.filter(id__in= random_pks)
 
-   # Ref: https://stackoverflow.com/questions/22816704/django-get-a-random-object
-   pks = Product.objects.values_list('pk', flat=True)
-   random_pks = [choice(pks), choice(pks), choice(pks), choice(pks)]
-   random_products = Product.objects.filter(id__in= random_pks)
+	data = cartData(request)
 
-   data = cartData(request)
-
-   cartItems = data['cartItems']
-   order = data['order']
-   items = data['items']
+	cartItems = data['cartItems']
 
 
-   return render(request, 'store/product.html', {'product': product, 'others': random_products, 'cartItems': cartItems})
+	return render(request, 'store/product.html', {'product': product, 'others': random_products, 'cartItems': cartItems})
 
 
 def cart(request):
@@ -95,6 +94,7 @@ def cart(request):
 	cartItems = data['cartItems']
 	order = data['order']
 	items = data['items']
+
 
 	context = {'items':items, 'order':order, 'cartItems':cartItems}
 	return render(request, 'store/cart.html', context)
@@ -111,6 +111,7 @@ def checkout(request):
 
 def updateItem(request):
 	data = json.loads(request.body)
+	print(data)
 	productId = data['productId']
 	action = data['action']
 	print('Action:', action)
@@ -118,6 +119,7 @@ def updateItem(request):
 
 	customer = request.user.customer
 	product = Product.objects.get(id=productId)
+	print(product)
 	order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
 	orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
@@ -178,28 +180,49 @@ def add_product(request):
 		})
 	return redirect('unauthorized')
 
+class CustomerProductListView(ListView):
+	model = Product
+	paginate_by = 4
+
+	# REF: https://stackoverflow.com/questions/13416502/django-search-form-in-class-based-listview
+	def get_queryset(self):
+		query = self.request.GET.get('q')
+
+		if query:
+			objects = self.model.objects.filter(Q(name__icontains=query) | Q(tag__icontains=query))
+		else:
+			objects = self.model.objects.all()
+		return objects
+
 
 class ProductListView(LoginRequiredMixin, ListView):
 	login_url = "/login/"
 	model = Product
 	paginate_by = 4
-
 class ProductDetailView(LoginRequiredMixin, DetailView):
 	login_url = "/login/"
 	model = Product
 	paginate_by = 4
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 	login_url = "/login/"
 	model = Product
-	fields = ["name", "price", "description",  "image"]
+	fields = ["name", "price", "description",  "image", 'tag']
 	template_name_suffix: str = "_update_form"
 	success_url = '/view_products/'
+	success_message = "Product updated successfully"
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin,SuccessMessageMixin, DeleteView):
 	login_url = "/login/"
 	model = Product
 	success_url = "/view_products/"
+	success_message = "Deleted Product Successfully"
+
+
+class OrderListView(LoginRequiredMixin, ListView):
+	login_url = "/login/"
+	model = Order
+	paginate_by = 10
 
 
 class CustomerListView(LoginRequiredMixin, ListView):
@@ -223,7 +246,7 @@ class BlogDetailView(LoginRequiredMixin, DetailView):
 		context = super().get_context_data(**kwargs)
 		return context
 
-class BlogDeleteView(LoginRequiredMixin, DeleteView):
+class BlogDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 	login_url = "/login/"
 	model = Blog
 	success_url = "/all-blogs/"
@@ -253,7 +276,7 @@ def add_blog(request):
 	return redirect('unauthorized')
 
 
-class BlogUpdateView(LoginRequiredMixin, UpdateView):
+class BlogUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 	login_url = "/login/"
 	model = Blog
 	fields = ["title", "tag", "description", ]
