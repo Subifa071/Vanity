@@ -20,9 +20,9 @@ class RegisterForm(UserCreationForm):
 class AddProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ["name", "price", "description", "digital", "image", 'tag']
+        fields = ["name", "price", "description", "image", 'tag']
 
 class AddBlogForm(forms.ModelForm):
     class Meta:
         model = Blog
-        fields = ['title', 'description', 'tag']
+        fields = ['title', 'description', 'tag', 'image', 'skin_type','highlighted_ingredients','highlighted_ingredients','skincare_concerns','formulation']

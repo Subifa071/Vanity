@@ -254,7 +254,8 @@ class BlogDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 def add_blog(request):
 	if request.user.is_superuser:
 		if request.method == "POST":
-			form = AddBlogForm(request.POST)
+			form = AddBlogForm(request.POST, request.FILES)
+			print(form)
 			if form.is_valid():
 				newpost = form.save(commit=False)
 				newpost.user = request.user
@@ -273,7 +274,7 @@ def add_blog(request):
 class BlogUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 	login_url = "/login/"
 	model = Blog
-	fields = ["title", "tag", "description", ]
+	fields = ["title", "tag", "description", "image", 'skin_type','highlighted_ingredients','highlighted_ingredients','skincare_concerns','formulation']
 	template_name_suffix: str = "_update_form"
 	success_url = '/all-blogs/'
 	success_message = "Updated Blog Successfully"

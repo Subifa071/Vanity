@@ -10,24 +10,22 @@
   {% for blog in object_list %}
   <div class="blog-box">
     <div class="blog-img">
-      <img src="/static/images/blog/b1.jpg" alt="" />
+      <img src="{{ blog.imageURL }}" alt="" />
     </div>
     <div class="blog-details">
-      <h4>The Ordinary AHA 30% + BHA 2% Exfoliating Peeling Solution</h4>
+      <h4>{{ blog.title }}</h4>
       <br />
       <strong>What it is: </strong>
       {{ blog.description | truncatewords:"50"  }}<br /><br />
 
-      <b>Skin Type:</b> Normal, Combination, and Oily <br /><br />
+      <b>Skin Type:</b> {{ blog.skin_type }} <br /><br />
 
-      <b>Skincare Concerns:</b> Dullness, Uneven Texture, and
-      Acne/Blemishes<br /><br />
+      <b>Skincare Concerns:</b> {{ blog.skincare_concerns }}<br /><br />
 
       <b>Formulation:</b>
-      Liquid<br /><br />
+      {{blog.formulation}}<br /><br />
       
-      Highlighted Ingredients: Glycolic Acid, Lactic Acid,
-      Salicylic Acid <br /><br />
+      Highlighted Ingredients: {{blog.highlighted_ingredients}} <br /><br />
 
     </div>
     <h1>{{ blog.published_at | date:"m/d" }}</h1>

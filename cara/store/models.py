@@ -3,6 +3,7 @@ from statistics import mode
 
 from django.contrib.auth.models import User
 from django.db import models
+from multiselectfield import MultiSelectField
 
 # Create your models here.
 
@@ -25,7 +26,6 @@ class Product(models.Model):
 	tag= models.CharField(max_length=10, choices=PRODUCT_TAGS)
 	price = models.FloatField()
 	description = models.TextField()
-	digital = models.BooleanField(default=False,null=True, blank=True)
 	image = models.ImageField(null=True, blank=True)
 
 	def __str__(self):
@@ -98,12 +98,47 @@ class Blog(models.Model):
 		("design", "Design"),
 		("fashion", "Fashion")
 	)
+	SKIN_TYPES = (
+	(	'normal', "Normal"),
+	('combination', 'Combination'),
+	('oily', "Oily")
+	)
+	SKINCARE_CONCERNS = (
+		('dullness', 'Dullness'),
+		("uneventexture",'Uneven Texture'),
+		('acne', 'Acne'),
+		('blemishes','Blemishes')
+	)
+	FORMULATION = (
+		('liquid', "Liquid"),
+	)
+	HIGHLIGHTED_INGREDIENTS = (
+	('ga','Glycolic Acid'),
+	('la','Lactic Acid'),
+	('sa','Salicylic Acid'),
+	)
+
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	title = models.CharField(max_length=200, null=False)
 	description = models.TextField()
 	tag= models.CharField(max_length=10, choices=BLOG_TAGS)
 	slug = models.SlugField(unique=True, max_length=100)
 	published_at = models.DateField(auto_now_add=True)
+	image = models.ImageField(null=True, blank=True)
+	skin_type = MultiSelectField(choices=SKIN_TYPES, min_choices=1)
+	highlighted_ingredients = MultiSelectField(choices=HIGHLIGHTED_INGREDIENTS, min_choices=1)
+	skincare_concerns = MultiSelectField(choices=SKINCARE_CONCERNS, min_choices= 1)
+	formulation = models.CharField(max_length=10, choices=FORMULATION)
+
 
 	def __str__(self):
 		return self.title
+	
+	@property
+	def imageURL(self):
+		try:
+			url = self.image.url
+		except:
+			url = ''
+		return url
+
