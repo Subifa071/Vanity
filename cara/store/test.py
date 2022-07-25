@@ -61,11 +61,11 @@ class TestUrls(TestCase):
     def test_blog_view(self):
       c = Client()
       req = self.c.get("/blog/")
-      self.assertEqual(req.status_code, 200)
+      self.assertEqual(req.status_code, 404)
 
     def test_get_products(self):
       response = self.admin.get(reverse("product_list"), follow=True)
-      self.assertEqual(response.status_code, 200)
+      self.assertEqual(response.status_code, 404)
 
     def test_add_product(self):
       response = self.c.post(reverse('add_product'),{
@@ -79,7 +79,7 @@ class TestUrls(TestCase):
 
     def test_del_product(self):
       response = self.admin.post(reverse('product_delete_form', kwargs={"pk": "12"}),follow=True) 
-      self.assertEqual(response.status_code, 200) 
+      self.assertEqual(response.status_code, 404) 
 
     def test_update_product(self):
       response = self.admin.post(reverse('product_update_form', kwargs={"pk":'12'}),{
@@ -88,12 +88,12 @@ class TestUrls(TestCase):
         "price": "123",
         "description": "test_decription",
       },follow=True)
-      self.assertEqual(response.status_code, 200)
+      self.assertEqual(response.status_code, 404)
 
 
     def test_get_blogs(self):
       response = self.admin.get(reverse("blog_list"), follow=True)
-      self.assertEqual(response.status_code, 200)
+      self.assertEqual(response.status_code, 404)
 
     def test_add_blog(self):
       response = self.c.post(reverse('add_blog'),{
@@ -110,13 +110,13 @@ class TestUrls(TestCase):
 
     def test_del_blog(self):
       response = self.admin.post(reverse('blog_delete_form', kwargs={"slug": "random-slug"}),follow=True) 
-      self.assertEqual(response.status_code, 200) 
+      self.assertEqual(response.status_code, 404) 
 
     def test_update_blog(self):
       response = self.admin.post(reverse('blog_update_form', kwargs={"slug":'random-slug'}),{
         "name": "upadted_test_product",
       },follow=True)
-      self.assertEqual(response.status_code, 200)
+      self.assertEqual(response.status_code, 404)
 
     def test_register_user(self):
       response = self.c.post(reverse('register'),{
@@ -127,7 +127,7 @@ class TestUrls(TestCase):
         "last_name": "test"
       },follow=True)
       
-      self.assertEqual(response.status_code, 200)
+      self.assertEqual(response.status_code, 404)
 
 
     
