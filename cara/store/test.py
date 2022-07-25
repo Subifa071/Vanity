@@ -61,11 +61,11 @@ class TestUrls(TestCase):
     def test_blog_view(self):
       c = Client()
       req = self.c.get("/blog/")
-      self.assertEqual(req.status_code, 404)
+      self.assertEqual(req.status_code, 200)
 
     def test_get_products(self):
       response = self.admin.get(reverse("product_list"), follow=True)
-      self.assertEqual(response.status_code, 404)
+      self.assertEqual(response.status_code, 200)
 
     def test_add_product(self):
       response = self.c.post(reverse('add_product'),{
@@ -93,7 +93,7 @@ class TestUrls(TestCase):
 
     def test_get_blogs(self):
       response = self.admin.get(reverse("blog_list"), follow=True)
-      self.assertEqual(response.status_code, 404)
+      self.assertEqual(response.status_code, 200)
 
     def test_add_blog(self):
       response = self.c.post(reverse('add_blog'),{
@@ -127,7 +127,7 @@ class TestUrls(TestCase):
         "last_name": "test"
       },follow=True)
       
-      self.assertEqual(response.status_code, 404)
+      self.assertEqual(response.status_code, 200)
 
 
     
